@@ -100,18 +100,13 @@
                 const op1 = Math.random() < 0.5 ? '+' : '-';
                 const op2 = Math.random() < 0.5 ? '+' : '-';
 
-                // Calculate answer2: (answer2 ± a) ± b = targetAnswer
                 let temp = targetAnswer;
-                if (op2 === '+') {
-                    temp = temp - b;
-                } else {
-                    temp = temp + b;
-                }
-                if (op1 === '+') {
-                    answer2 = temp - a;
-                } else {
-                    answer2 = temp + a;
-                }
+                if (op2 === '+') temp = temp - b; else temp = temp + b;
+                if (op1 === '+') answer2 = temp - a; else answer2 = temp + a;
+
+                // Ensure inner (answer2 op1 a) is positive
+                const inner3 = op1 === '+' ? answer2 + a : answer2 - a;
+                if (inner3 < 1) return null;
 
                 p3 = `(____ ${op1} ${a}) ${op2} ${b}`;
             } else {
@@ -121,18 +116,12 @@
                 const op1 = Math.random() < 0.5 ? '+' : '-';
                 const op2 = Math.random() < 0.5 ? '+' : '-';
 
-                // Calculate answer2: answer2 ± (a ± b) = targetAnswer
-                let temp = a;
-                if (op2 === '+') {
-                    temp = a + b;
-                } else {
-                    temp = a - b;
-                }
-                if (op1 === '+') {
-                    answer2 = targetAnswer - temp;
-                } else {
-                    answer2 = targetAnswer + temp;
-                }
+                // Ensure inner (a op2 b) is positive
+                const inner3 = op2 === '+' ? a + b : a - b;
+                if (inner3 < 1) return null;
+
+                if (op1 === '+') answer2 = targetAnswer - inner3;
+                else answer2 = targetAnswer + inner3;
 
                 p3 = `____ ${op1} (${a} ${op2} ${b})`;
             }
@@ -151,16 +140,12 @@
                 const op4 = Math.random() < 0.5 ? '+' : '-';
 
                 let temp = answer2;
-                if (op4 === '+') {
-                    temp = temp - d;
-                } else {
-                    temp = temp + d;
-                }
-                if (op3 === '+') {
-                    answer1 = temp - c;
-                } else {
-                    answer1 = temp + c;
-                }
+                if (op4 === '+') temp = temp - d; else temp = temp + d;
+                if (op3 === '+') answer1 = temp - c; else answer1 = temp + c;
+
+                // Ensure inner (answer1 op3 c) is positive
+                const inner2 = op3 === '+' ? answer1 + c : answer1 - c;
+                if (inner2 < 1) return null;
 
                 p2 = `(____ ${op3} ${c}) ${op4} ${d}`;
             } else {
@@ -170,17 +155,12 @@
                 const op3 = Math.random() < 0.5 ? '+' : '-';
                 const op4 = Math.random() < 0.5 ? '+' : '-';
 
-                let temp = c;
-                if (op4 === '+') {
-                    temp = c + d;
-                } else {
-                    temp = c - d;
-                }
-                if (op3 === '+') {
-                    answer1 = answer2 - temp;
-                } else {
-                    answer1 = answer2 + temp;
-                }
+                // Ensure inner (c op4 d) is positive
+                const inner2 = op4 === '+' ? c + d : c - d;
+                if (inner2 < 1) return null;
+
+                if (op3 === '+') answer1 = answer2 - inner2;
+                else answer1 = answer2 + inner2;
 
                 p2 = `____ ${op3} (${c} ${op4} ${d})`;
             }
@@ -198,19 +178,11 @@
                 const op5 = Math.random() < 0.5 ? '+' : '-';
                 const op6 = Math.random() < 0.5 ? '+' : '-';
 
-                let temp = e;
-                if (op5 === '+') {
-                    temp = temp + f;
-                } else {
-                    temp = temp - f;
-                }
-                let g;
-                if (op6 === '+') {
-                    g = answer1 - temp;
-                } else {
-                    g = temp - answer1;
-                }
+                // Ensure inner (e op5 f) is positive
+                const temp = op5 === '+' ? e + f : e - f;
+                if (temp < 1) return null;
 
+                const g = op6 === '+' ? answer1 - temp : temp - answer1;
                 if (g < 1 || g > 99) return null;
                 p1 = `(${e} ${op5} ${f}) ${op6} ${g}`;
             } else {
@@ -220,46 +192,19 @@
                 const op5 = Math.random() < 0.5 ? '+' : '-';
                 const op6 = Math.random() < 0.5 ? '+' : '-';
 
-                let temp = f;
-                if (op6 === '+') {
-                    temp = temp;
-                } else {
-                    temp = temp;
-                }
-                let g = Math.floor(Math.random() * 25) + 5;
-
-                let innerResult;
-                if (op6 === '+') {
-                    innerResult = f + g;
-                } else {
-                    innerResult = f - g;
-                }
-
-                let outerCheck;
+                let g;
                 if (op5 === '+') {
-                    outerCheck = e + innerResult;
+                    g = op6 === '+' ? answer1 - e - f : f - (answer1 - e);
                 } else {
-                    outerCheck = e - innerResult;
-                }
-
-                if (outerCheck !== answer1) {
-                    // Adjust g
-                    if (op5 === '+') {
-                        if (op6 === '+') {
-                            g = answer1 - e - f;
-                        } else {
-                            g = f - (answer1 - e);
-                        }
-                    } else {
-                        if (op6 === '+') {
-                            g = e - answer1 - f;
-                        } else {
-                            g = f - (e - answer1);
-                        }
-                    }
+                    g = op6 === '+' ? e - answer1 - f : f - (e - answer1);
                 }
 
                 if (g < 1 || g > 99) return null;
+
+                // Ensure inner (f op6 g) is positive
+                const innerResult = op6 === '+' ? f + g : f - g;
+                if (innerResult < 1) return null;
+
                 p1 = `${e} ${op5} (${f} ${op6} ${g})`;
             }
 
@@ -269,8 +214,7 @@
                 p2: p2,
                 a2: answer2,
                 p3: p3,
-                a3: targetAnswer,
-                letter: targetLetters[targetAnswers.indexOf(targetAnswer)]
+                a3: targetAnswer
             };
         }
 
@@ -302,7 +246,7 @@
                 const letterNum = letterIdx + 1;
                 html += `
                     <div class="problem-set">
-                        <div class="set-header">${word} - Letter ${letterNum}</div>
+                        <div class="set-header">Set ${setIndex + 1}</div>
                         <div class="problem">
                             <span class="problem-num">1.</span> ${set.p1} = <span style="border-bottom: 1px solid black; width: 0.5in; display: inline-block;">&nbsp;</span>
                         </div>
