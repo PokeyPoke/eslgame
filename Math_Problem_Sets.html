@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Sets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0.3in;
+            background-color: white;
+        }
+
+        .problem-set {
+            border: 2px solid #333;
+            padding: 0.3in;
+            margin-bottom: 0.2in;
+            page-break-inside: avoid;
+        }
+
+        .set-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 0.15in;
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.08in;
+        }
+
+        .problem {
+            margin: 0.2in 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .problem-num {
+            font-weight: bold;
+            width: 0.3in;
+            display: inline-block;
+            font-size: 18px;
+        }
+
+        .code-section {
+            margin-top: 0.5in;
+            padding: 0.2in;
+            border: 2px solid #333;
+            page-break-inside: avoid;
+        }
+
+        .code-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 0.15in;
+        }
+
+        .code-content {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        @media print {
+            body {
+                padding: 0.2in;
+            }
+            .problem-set {
+                margin-bottom: 0.15in;
+                padding: 0.25in;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Generate problem sets
+        const message = "KIDS LOVE MATH GAME WEEKEND PARTY TIME";
+        const targetLetters = message.replace(/ /g, '').split('');
+        const letterCode = {};
+        for (let i = 0; i < 26; i++) {
+            letterCode[String.fromCharCode(65 + i)] = i + 1;
+        }
+
+        const targetAnswers = targetLetters.map(letter => letterCode[letter]);
+
+        function generateProblemSet(targetAnswer) {
+            // Work backwards from target answer
+
+            // Problem 3: Use format 1 or 2 randomly
+            const format3 = Math.random() < 0.5 ? 'type1' : 'type2';
+            let p3, answer2;
+
+            if (format3 === 'type1') {
+                // (answer2 ± a) ± b = targetAnswer
+                const a = Math.floor(Math.random() * 20) + 5;
+                const b = Math.floor(Math.random() * 20) + 5;
+                const op1 = Math.random() < 0.5 ? '+' : '-';
+                const op2 = Math.random() < 0.5 ? '+' : '-';
+
+                // Calculate answer2: (answer2 ± a) ± b = targetAnswer
+                let temp = targetAnswer;
+                if (op2 === '+') {
+                    temp = temp - b;
+                } else {
+                    temp = temp + b;
+                }
+                if (op1 === '+') {
+                    answer2 = temp - a;
+                } else {
+                    answer2 = temp + a;
+                }
+
+                p3 = `(____ ${op1} ${a}) ${op2} ${b}`;
+            } else {
+                // answer2 ± (a ± b) = targetAnswer
+                const a = Math.floor(Math.random() * 20) + 5;
+                const b = Math.floor(Math.random() * 20) + 5;
+                const op1 = Math.random() < 0.5 ? '+' : '-';
+                const op2 = Math.random() < 0.5 ? '+' : '-';
+
+                // Calculate answer2: answer2 ± (a ± b) = targetAnswer
+                let temp = a;
+                if (op2 === '+') {
+                    temp = a + b;
+                } else {
+                    temp = a - b;
+                }
+                if (op1 === '+') {
+                    answer2 = targetAnswer - temp;
+                } else {
+                    answer2 = targetAnswer + temp;
+                }
+
+                p3 = `____ ${op1} (${a} ${op2} ${b})`;
+            }
+
+            if (answer2 < 1 || answer2 > 100) return null;
+
+            // Problem 2: Use format 1 or 2 randomly
+            const format2 = Math.random() < 0.5 ? 'type1' : 'type2';
+            let p2, answer1;
+
+            if (format2 === 'type1') {
+                // (answer1 ± c) ± d = answer2
+                const c = Math.floor(Math.random() * 20) + 5;
+                const d = Math.floor(Math.random() * 20) + 5;
+                const op3 = Math.random() < 0.5 ? '+' : '-';
+                const op4 = Math.random() < 0.5 ? '+' : '-';
+
+                let temp = answer2;
+                if (op4 === '+') {
+                    temp = temp - d;
+                } else {
+                    temp = temp + d;
+                }
+                if (op3 === '+') {
+                    answer1 = temp - c;
+                } else {
+                    answer1 = temp + c;
+                }
+
+                p2 = `(____ ${op3} ${c}) ${op4} ${d}`;
+            } else {
+                // answer1 ± (c ± d) = answer2
+                const c = Math.floor(Math.random() * 20) + 5;
+                const d = Math.floor(Math.random() * 20) + 5;
+                const op3 = Math.random() < 0.5 ? '+' : '-';
+                const op4 = Math.random() < 0.5 ? '+' : '-';
+
+                let temp = c;
+                if (op4 === '+') {
+                    temp = c + d;
+                } else {
+                    temp = c - d;
+                }
+                if (op3 === '+') {
+                    answer1 = answer2 - temp;
+                } else {
+                    answer1 = answer2 + temp;
+                }
+
+                p2 = `____ ${op3} (${c} ${op4} ${d})`;
+            }
+
+            if (answer1 < 1 || answer1 > 100) return null;
+
+            // Problem 1: Use format 1 or 2 randomly
+            const format1 = Math.random() < 0.5 ? 'type1' : 'type2';
+            let p1;
+
+            if (format1 === 'type1') {
+                // (e ± f) ± g = answer1
+                const e = Math.floor(Math.random() * 30) + 10;
+                const f = Math.floor(Math.random() * 25) + 5;
+                const op5 = Math.random() < 0.5 ? '+' : '-';
+                const op6 = Math.random() < 0.5 ? '+' : '-';
+
+                let temp = e;
+                if (op5 === '+') {
+                    temp = temp + f;
+                } else {
+                    temp = temp - f;
+                }
+                let g;
+                if (op6 === '+') {
+                    g = temp - answer1;
+                } else {
+                    g = temp + answer1;
+                }
+
+                if (g < 1 || g > 99) return null;
+                p1 = `(${e} ${op5} ${f}) ${op6} ${g}`;
+            } else {
+                // e ± (f ± g) = answer1
+                const e = Math.floor(Math.random() * 30) + 10;
+                const f = Math.floor(Math.random() * 25) + 5;
+                const op5 = Math.random() < 0.5 ? '+' : '-';
+                const op6 = Math.random() < 0.5 ? '+' : '-';
+
+                let temp = f;
+                if (op6 === '+') {
+                    temp = temp;
+                } else {
+                    temp = temp;
+                }
+                let g = Math.floor(Math.random() * 25) + 5;
+
+                let innerResult;
+                if (op6 === '+') {
+                    innerResult = f + g;
+                } else {
+                    innerResult = f - g;
+                }
+
+                let outerCheck;
+                if (op5 === '+') {
+                    outerCheck = e + innerResult;
+                } else {
+                    outerCheck = e - innerResult;
+                }
+
+                if (outerCheck !== answer1) {
+                    // Adjust g
+                    if (op5 === '+') {
+                        if (op6 === '+') {
+                            g = answer1 - e - f;
+                        } else {
+                            g = f - (answer1 - e);
+                        }
+                    } else {
+                        if (op6 === '+') {
+                            g = e - answer1 - f;
+                        } else {
+                            g = f - (e - answer1);
+                        }
+                    }
+                }
+
+                if (g < 1 || g > 99) return null;
+                p1 = `${e} ${op5} (${f} ${op6} ${g})`;
+            }
+
+            return {
+                p1: p1,
+                a1: answer1,
+                p2: p2,
+                a2: answer2,
+                p3: p3,
+                a3: targetAnswer,
+                letter: targetLetters[targetAnswers.indexOf(targetAnswer)]
+            };
+        }
+
+        // Generate all problem sets
+        const problemSets = [];
+        for (let i = 0; i < targetAnswers.length; i++) {
+            for (let attempt = 0; attempt < 100; attempt++) {
+                const set = generateProblemSet(targetAnswers[i]);
+                if (set) {
+                    problemSets.push(set);
+                    break;
+                }
+            }
+        }
+
+        // Group problem sets by word
+        const words = ['KIDS', 'LOVE', 'MATH', 'GAME', 'WEEKEND', 'PARTY', 'TIME'];
+        const wordsLetterCounts = [4, 4, 4, 4, 7, 5, 4];
+
+        // Generate HTML
+        let html = '';
+        let setIndex = 0;
+        for (let wordIdx = 0; wordIdx < words.length; wordIdx++) {
+            const word = words[wordIdx];
+            const count = wordsLetterCounts[wordIdx];
+
+            for (let letterIdx = 0; letterIdx < count; letterIdx++) {
+                const set = problemSets[setIndex];
+                const letterNum = letterIdx + 1;
+                html += `
+                    <div class="problem-set">
+                        <div class="set-header">${word} - Letter ${letterNum}</div>
+                        <div class="problem">
+                            <span class="problem-num">1.</span> ${set.p1} = <span style="border-bottom: 1px solid black; width: 0.5in; display: inline-block;">&nbsp;</span>
+                        </div>
+                        <div class="problem">
+                            <span class="problem-num">2.</span> ${set.p2} = <span style="border-bottom: 1px solid black; width: 0.5in; display: inline-block;">&nbsp;</span>
+                        </div>
+                        <div class="problem">
+                            <span class="problem-num">3.</span> ${set.p3} = <span style="border-bottom: 1px solid black; width: 0.5in; display: inline-block;">&nbsp;</span>
+                        </div>
+                    </div>
+                `;
+                setIndex++;
+            }
+        }
+
+        // Add code section
+        html += `
+            <div class="code-section">
+                <div class="code-title">🔑 LETTER CODE 🔑</div>
+                <div class="code-content">
+                    <strong>Use your answer from Problem 3 to find the letter:</strong><br><br>
+                    1=A | 2=B | 3=C | 4=D | 5=E | 6=F | 7=G | 8=H | 9=I | 10=J<br>
+                    11=K | 12=L | 13=M | 14=N | 15=O | 16=P | 17=Q | 18=R | 19=S | 20=T<br>
+                    21=U | 22=V | 23=W | 24=X | 25=Y | 26=Z<br><br>
+                    <strong>When you solve all 32 sets, write down all the letters in order:</strong><br>
+                    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                </div>
+            </div>
+        `;
+
+        document.body.innerHTML = html;
+    </script>
+</body>
+</html>
