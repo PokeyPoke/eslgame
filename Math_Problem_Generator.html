@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        input, select {
+            padding: 0.7rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            grid-column: 1 / -1;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-generate {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-generate:hover {
+            background: #764ba2;
+            transform: scale(1.02);
+        }
+
+        .btn-print {
+            background: #43e97b;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #38f9d7;
+            transform: scale(1.02);
+        }
+
+        .btn-home {
+            background: #999;
+            color: white;
+        }
+
+        .btn-home:hover {
+            background: #777;
+        }
+
+        .problems-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .problem-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .problem-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .answer {
+            font-size: 16px;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .message {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+            font-size: 18px;
+        }
+
+        @media print {
+            .controls { display: none; }
+            .problem-card {
+                page-break-inside: avoid;
+                border: 1px solid #999;
+            }
+            .answer { display: none; }
+            .problems-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>➕ Math Problem Generator</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="numProblems">Number of Problems:</label>
+                <input type="number" id="numProblems" min="1" max="100" value="10">
+            </div>
+
+            <div class="control-group">
+                <label for="maxNumber">Max Number:</label>
+                <select id="maxNumber">
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="99" selected>99</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="showAnswers">Show Answers:</label>
+                <select id="showAnswers">
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-generate" onclick="generateProblems()">🔄 Generate Problems</button>
+                <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+                <button class="btn-home" onclick="location.href='index.html'">🏠 Back Home</button>
+            </div>
+        </div>
+
+        <div id="problemsOutput" class="message">Click "Generate Problems" to create math problems</div>
+    </div>
+
+    <script>
+        function generateProblems() {
+            const numProblems = parseInt(document.getElementById('numProblems').value);
+            const maxNumber = parseInt(document.getElementById('maxNumber').value);
+            const showAnswers = document.getElementById('showAnswers').value === 'yes';
+
+            if (numProblems < 1 || numProblems > 100) {
+                alert('Please enter between 1 and 100 problems');
+                return;
+            }
+
+            const problems = [];
+
+            for (let i = 0; i < numProblems; i++) {
+                const problem = generateSingleProblem(maxNumber);
+                problems.push(problem);
+            }
+
+            displayProblems(problems, showAnswers);
+        }
+
+        function generateSingleProblem(maxNumber) {
+            const format = Math.random() < 0.5 ? 'type1' : 'type2';
+            let a, b, c, op1, op2, problem, answer;
+
+            if (format === 'type1') {
+                // (a ± b) ± c = answer
+                a = Math.floor(Math.random() * maxNumber) + 1;
+                b = Math.floor(Math.random() * maxNumber) + 1;
+                c = Math.floor(Math.random() * maxNumber) + 1;
+                op1 = Math.random() < 0.5 ? '+' : '-';
+                op2 = Math.random() < 0.5 ? '+' : '-';
+
+                let temp = a;
+                if (op1 === '+') {
+                    temp = temp + b;
+                } else {
+                    temp = temp - b;
+                }
+
+                if (op2 === '+') {
+                    answer = temp + c;
+                } else {
+                    answer = temp - c;
+                }
+
+                problem = `(${a} ${op1} ${b}) ${op2} ${c}`;
+            } else {
+                // a ± (b ± c) = answer
+                a = Math.floor(Math.random() * maxNumber) + 1;
+                b = Math.floor(Math.random() * maxNumber) + 1;
+                c = Math.floor(Math.random() * maxNumber) + 1;
+                op1 = Math.random() < 0.5 ? '+' : '-';
+                op2 = Math.random() < 0.5 ? '+' : '-';
+
+                let innerResult;
+                if (op2 === '+') {
+                    innerResult = b + c;
+                } else {
+                    innerResult = b - c;
+                }
+
+                if (op1 === '+') {
+                    answer = a + innerResult;
+                } else {
+                    answer = a - innerResult;
+                }
+
+                problem = `${a} ${op1} (${b} ${op2} ${c})`;
+            }
+
+            // Ensure answer is positive and reasonable
+            if (answer < 0) answer = Math.abs(answer);
+
+            return { problem, answer };
+        }
+
+        function displayProblems(problems, showAnswers) {
+            let html = '<div class="problems-container">';
+
+            problems.forEach((prob, index) => {
+                html += `
+                    <div class="problem-card">
+                        <div class="problem-text">${prob.problem} = ____</div>
+                        ${showAnswers ? `<div class="answer"><span class="answer-label">Answer:</span> ${prob.answer}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            document.getElementById('problemsOutput').innerHTML = html;
+        }
+
+        // Generate problems on page load
+        window.addEventListener('load', () => {
+            generateProblems();
+        });
+    </script>
+</body>
+</html>

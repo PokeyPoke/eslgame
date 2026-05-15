@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Shapes - Classroom Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 1rem;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .controls button {
+            margin: 0 0.5rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .shapes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .shape-display {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .shape-display:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
+        }
+
+        .shape-svg {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1rem;
+        }
+
+        .shape-label {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .shape-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media print {
+            .controls { display: none; }
+            .shapes-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .shapes-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .shapes-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="window.print()">🖨️ Print Page</button>
+        <button onclick="location.href='index.html'">🏠 Back Home</button>
+    </div>
+
+    <div class="shapes-container">
+        <!-- Circle -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="40" fill="#FFB6C1" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Circle</div>
+            <div class="shape-description">Round shape with no corners</div>
+        </div>
+
+        <!-- Square -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="20" width="60" height="60" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Square</div>
+            <div class="shape-description">4 equal sides, 4 right angles</div>
+        </div>
+
+        <!-- Triangle -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 15 L 25 75 L 75 75 Z" fill="#98FB98" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Triangle</div>
+            <div class="shape-description">3 sides, 3 angles</div>
+        </div>
+
+        <!-- Rectangle -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="30" width="70" height="40" fill="#FFD700" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Rectangle</div>
+            <div class="shape-description">4 sides, opposite sides equal, 4 right angles</div>
+        </div>
+
+        <!-- Pentagon -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 20 L 80 40 L 70 75 L 30 75 L 20 40 Z" fill="#DDA0DD" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Pentagon</div>
+            <div class="shape-description">5 sides, 5 angles</div>
+        </div>
+
+        <!-- Hexagon -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 20 L 75 35 L 75 65 L 50 80 L 25 65 L 25 35 Z" fill="#FFA07A" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Hexagon</div>
+            <div class="shape-description">6 sides, 6 angles</div>
+        </div>
+
+        <!-- Octagon -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 35 20 L 65 20 L 80 35 L 80 65 L 65 80 L 35 80 L 20 65 L 20 35 Z" fill="#20B2AA" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Octagon</div>
+            <div class="shape-description">8 sides, 8 angles</div>
+        </div>
+
+        <!-- Diamond -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 20 L 75 50 L 50 80 L 25 50 Z" fill="#F0E68C" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Diamond</div>
+            <div class="shape-description">4 equal sides, angles are not 90 degrees</div>
+        </div>
+
+        <!-- Trapezoid -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 30 30 L 70 30 L 80 70 L 20 70 Z" fill="#FFB6C1" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Trapezoid</div>
+            <div class="shape-description">4 sides, only 2 sides are parallel</div>
+        </div>
+
+        <!-- Parallelogram -->
+        <div class="shape-display">
+            <svg class="shape-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 25 35 L 65 35 L 75 65 L 35 65 Z" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+            </svg>
+            <div class="shape-label">Parallelogram</div>
+            <div class="shape-description">4 sides, opposite sides parallel and equal</div>
+        </div>
+    </div>
+</body>
+</html>
