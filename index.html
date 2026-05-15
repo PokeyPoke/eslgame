@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESL Game - Printable Worksheets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .worksheets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .worksheet-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: block;
+        }
+
+        .worksheet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .worksheet-card.shapes-2d {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .worksheet-card.shapes-3d {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .worksheet-card.math {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .worksheet-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .worksheet-card p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .print-button {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            border: 2px solid white;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .print-button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 2rem;
+            border-radius: 5px;
+            margin-top: 2rem;
+        }
+
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .info-section ul {
+            list-style: none;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .info-section li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 ESL Game - Printable Worksheets</h1>
+        <p class="subtitle">Interactive learning materials for your classroom</p>
+
+        <div class="worksheets">
+            <a href="2D_Shapes_Printable.html" class="worksheet-card shapes-2d">
+                <h2>2D Shapes</h2>
+                <p>Learn and practice basic 2D shapes. Perfect for cutting and pasting into student notebooks.</p>
+                <span class="print-button">📄 Open & Print</span>
+            </a>
+
+            <a href="3D_Shapes_Printable.html" class="worksheet-card shapes-3d">
+                <h2>3D Shapes</h2>
+                <p>Explore three-dimensional shapes with clear visual representations.</p>
+                <span class="print-button">📄 Open & Print</span>
+            </a>
+
+            <a href="Math_Problem_Sets.html" class="worksheet-card math">
+                <h2>Math Problem Sets</h2>
+                <p>32 interactive problem sets that reveal a hidden message. Chain answers through problems to discover the secret!</p>
+                <span class="print-button">📄 Open & Print</span>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h3>💡 How to Use</h3>
+            <ul>
+                <li>Click any worksheet to open it in your browser</li>
+                <li>Use your browser's print function (Ctrl+P or Cmd+P) to print</li>
+                <li>Landscape orientation recommended for best results</li>
+                <li>Each worksheet is designed for classroom use and printing</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>📋 What's Included</h3>
+            <ul>
+                <li><strong>2D Shapes:</strong> 8 complete sets with 10 shapes each</li>
+                <li><strong>3D Shapes:</strong> 8 complete sets with 10 shapes each</li>
+                <li><strong>Math Problems:</strong> 32 problem sets revealing "KIDS LOVE MATH GAME WEEKEND PARTY TIME"</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Made for 2nd grade ESL learners • Perfect for speaking practice and vocabulary building</p>
+        </div>
+    </div>
+</body>
+</html>
