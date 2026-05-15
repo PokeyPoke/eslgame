@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
             background: white;
             border-radius: 15px;
@@ -77,6 +77,14 @@
 
         .worksheet-card.math {
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .worksheet-card.presentation {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FFA502 100%);
+        }
+
+        .worksheet-card.generator {
+            background: linear-gradient(135deg, #FA8231 0%, #F368E0 100%);
         }
 
         .worksheet-card h2 {
@@ -143,8 +151,23 @@
         }
 
         @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; padding: 0; }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+            .worksheet-card {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .worksheets {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -171,6 +194,18 @@
                 <p>32 interactive problem sets that reveal a hidden message. Chain answers through problems to discover the secret!</p>
                 <span class="print-button">📄 Open & Print</span>
             </a>
+
+            <a href="2D_Shapes_Presentation.html" class="worksheet-card presentation">
+                <h2>2D Shapes Presentation</h2>
+                <p>Large, colorful shapes with labels - perfect for classroom display and teaching.</p>
+                <span class="print-button">📊 View Presentation</span>
+            </a>
+
+            <a href="Math_Problem_Generator.html" class="worksheet-card generator">
+                <h2>Math Problem Generator</h2>
+                <p>Create unlimited standalone math problems. Perfect for quizzes, practice, or daily drills.</p>
+                <span class="print-button">🎲 Generate Problems</span>
+            </a>
         </div>
 
         <div class="info-section">
@@ -186,9 +221,11 @@
         <div class="info-section">
             <h3>📋 What's Included</h3>
             <ul>
-                <li><strong>2D Shapes:</strong> 8 complete sets with 10 shapes each</li>
-                <li><strong>3D Shapes:</strong> 8 complete sets with 10 shapes each</li>
-                <li><strong>Math Problems:</strong> 32 problem sets revealing "KIDS LOVE MATH GAME WEEKEND PARTY TIME"</li>
+                <li><strong>2D Shapes:</strong> 8 complete sets with 10 shapes each (Circle, Square, Triangle, Rectangle, Pentagon, Hexagon, Octagon, Diamond, Trapezoid, Parallelogram)</li>
+                <li><strong>3D Shapes:</strong> 8 complete sets with 10 shapes each (Sphere, Cylinder, Cone, Cube, Rectangular Prism, Hexagonal Prism, Pyramid, Tetrahedron, Triangular Prism, Pentagonal Pyramid)</li>
+                <li><strong>Math Problem Sets:</strong> 32 problem sets revealing "KIDS LOVE MATH GAME WEEKEND PARTY TIME"</li>
+                <li><strong>2D Shapes Presentation:</strong> Large labeled shapes perfect for projector/smartboard</li>
+                <li><strong>Problem Generator:</strong> Create unlimited standalone practice problems on demand</li>
             </ul>
         </div>
 
@@ -198,15 +235,3 @@
     </div>
 </body>
 </html>
-
-            <a href="2D_Shapes_Presentation.html" class="worksheet-card shapes-2d" style="background: linear-gradient(135deg, #FF6B9D 0%, #FFA502 100%);">
-                <h2>2D Shapes Presentation</h2>
-                <p>Large, colorful shapes with labels - perfect for classroom display and teaching.</p>
-                <span class="print-button">📊 View Presentation</span>
-            </a>
-
-            <a href="Math_Problem_Generator.html" class="worksheet-card math" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <h2>Math Problem Generator</h2>
-                <p>Create unlimited standalone math problems. Perfect for quizzes, practice, or daily drills.</p>
-                <span class="print-button">🎲 Generate Problems</span>
-            </a>
