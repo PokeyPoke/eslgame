@@ -206,9 +206,9 @@
                 }
                 let g;
                 if (op6 === '+') {
-                    g = temp - answer1;
+                    g = answer1 - temp;
                 } else {
-                    g = temp + answer1;
+                    g = temp - answer1;
                 }
 
                 if (g < 1 || g > 99) return null;
