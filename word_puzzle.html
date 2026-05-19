@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kids Word Puzzle ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Bangers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B9D;
+            --secondary: #845EC2;
+            --accent: #FFC75F;
+            --success: #00C9A7;
+            --error: #FF5E78;
+            --bg-grad: linear-gradient(135deg, #FF6B9D 0%, #FFC75F 50%, #845EC2 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: var(--bg-grad);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 8px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            min-height: calc(100vh - 2rem);
+        }
+
+        .header {
+            text-align: center;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Bangers', cursive;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--primary);
+            text-shadow: 4px 4px 0px rgba(132, 94, 194, 0.3);
+            letter-spacing: 4px;
+            transform: rotate(-1deg);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1rem;
+            flex-grow: 1;
+        }
+
+        .word-card {
+            background: white;
+            border: 4px solid var(--accent);
+            border-radius: 20px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 0px var(--accent);
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 0;
+        }
+
+        .word-card.complete {
+            border-color: var(--success);
+            box-shadow: 0 8px 0px var(--success);
+            background: #F0FFF4;
+        }
+
+        .card-label {
+            font-family: 'Bangers', cursive;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            background: #F0E8FF;
+            padding: 0.2rem 0.8rem;
+            border-radius: 10px;
+        }
+
+        .blanks-container {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        #card-5 .blanks-container {
+            flex-wrap: wrap;
+        }
+
+        .space-divider {
+            width: 20px;
+        }
+
+        #card-5 .space-divider {
+            width: 100%;
+            height: 0;
+            margin: 0;
+        }
+
+        .blank {
+            width: clamp(45px, 6vw, 65px);
+            height: clamp(45px, 6vw, 65px);
+            border: 4px dashed #DDD;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            color: var(--secondary);
+            background: #FAFAFA;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .blank.active {
+            border-color: var(--secondary);
+            background: #F0E8FF;
+            transform: scale(1.05);
+        }
+
+        .blank.filled {
+            border: 4px solid var(--success);
+            background: white;
+            color: var(--success);
+            border-style: solid;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .blank.error {
+            border-color: var(--error);
+            background: #FFF5F5;
+            animation: shake 0.4s;
+        }
+
+        .space-divider {
+            width: 20px;
+        }
+
+        .letters-tray {
+            background: #FFE8D1;
+            border: 6px solid var(--primary);
+            border-radius: 25px;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .tray-title {
+            text-align: center;
+            font-family: 'Bangers', cursive;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .letters-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .letter-tile {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 4px solid var(--primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: grab;
+            box-shadow: 0 6px 0px var(--primary);
+            transition: transform 0.1s, box-shadow 0.1s;
+            touch-action: none;
+            position: relative;
+        }
+
+        .letter-tile:active {
+            cursor: grabbing;
+        }
+
+        .letter-tile.dragging {
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0.9;
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .letter-tile.used {
+            opacity: 0.3;
+            pointer-events: none;
+            box-shadow: none;
+            transform: translateY(4px);
+        }
+
+        .footer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .btn-reset {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 0px #C45C7E;
+            transition: all 0.1s;
+        }
+
+        .btn-reset:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0px #C45C7E;
+        }
+
+        .win-message {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: var(--success);
+            display: none;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        @media (max-width: 600px) {
+            .blank { width: 50px; height: 50px; font-size: 1.8rem; }
+            .letter-tile { width: 45px; height: 45px; font-size: 1.5rem; }
+            .container { padding: 1rem; border-width: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">✨ WORD PUZZLE ✨</h1>
+            <p class="subtitle">Drag letters to the boxes!</p>
+        </div>
+
+        <div class="words-grid" id="wordsGrid">
+            <!-- Words will be generated here -->
+        </div>
+
+        <div class="letters-tray">
+            <div class="tray-title">Pick your letters:</div>
+            <div class="letters-grid" id="lettersGrid">
+                <!-- Letters will be generated here -->
+            </div>
+        </div>
+
+        <div class="footer-controls">
+            <div class="win-message" id="winMessage">🎉 YOU ARE A STAR! 🎉</div>
+        </div>
+    </div>
+
+    <script>
+        const WORD_DATA = [
+            { id: 1, word: 'BRAVE' },
+            { id: 2, word: 'HAPPY' },
+            { id: 3, word: 'FUNNY' },
+            { id: 4, word: 'SMART' },
+            { id: 5, word: 'BE KIND' },
+            { id: 6, word: 'PROUD' }
+        ];
+
+        let activeDragging = null;
+        let dragProxy = null;
+        let startX, startY;
+        let completedCount = 0;
+
+        function init() {
+            const wordsGrid = document.getElementById('wordsGrid');
+            const lettersGrid = document.getElementById('lettersGrid');
+            
+            wordsGrid.innerHTML = '';
+            lettersGrid.innerHTML = '';
+            completedCount = 0;
+            document.getElementById('winMessage').style.display = 'none';
+
+            // Create Word Cards
+            WORD_DATA.forEach(data => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.id = `card-${data.id}`;
+                
+                const label = document.createElement('div');
+                label.className = 'card-label';
+                label.textContent = `Word #${data.id}`;
+                
+                const blanksContainer = document.createElement('div');
+                blanksContainer.className = 'blanks-container';
+                
+                data.word.split('').forEach((char, idx) => {
+                    if (char === ' ') {
+                        const space = document.createElement('div');
+                        space.className = 'space-divider';
+                        blanksContainer.appendChild(space);
+                    } else {
+                        const blank = document.createElement('div');
+                        blank.className = 'blank';
+                        blank.dataset.target = char;
+                        blank.dataset.groupId = data.id;
+                        blanksContainer.appendChild(blank);
+                    }
+                });
+
+                card.appendChild(label);
+                card.appendChild(blanksContainer);
+                wordsGrid.appendChild(card);
+            });
+
+            // Create Letter Tiles
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            alphabet.forEach(letter => {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile';
+                tile.textContent = letter;
+                tile.dataset.letter = letter;
+                
+                tile.addEventListener('pointerdown', onPointerDown);
+                lettersGrid.appendChild(tile);
+            });
+        }
+
+        function onPointerDown(e) {
+            if (e.target.classList.contains('used')) return;
+            
+            activeDragging = e.target;
+            const rect = activeDragging.getBoundingClientRect();
+            
+            // Create a drag proxy
+            dragProxy = activeDragging.cloneNode(true);
+            dragProxy.classList.add('dragging');
+            dragProxy.style.width = rect.width + 'px';
+            dragProxy.style.height = rect.height + 'px';
+            dragProxy.style.left = rect.left + 'px';
+            dragProxy.style.top = rect.top + 'px';
+            
+            document.body.appendChild(dragProxy);
+            
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            
+            activeDragging.style.visibility = 'hidden';
+            
+            window.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('pointerup', onPointerUp);
+            
+            // Lock pointer
+            activeDragging.setPointerCapture(e.pointerId);
+        }
+
+        function onPointerMove(e) {
+            if (!dragProxy) return;
+            dragProxy.style.left = (e.clientX - startX) + 'px';
+            dragProxy.style.top = (e.clientY - startY) + 'px';
+            
+            // Highlight potential targets
+            checkCollision(e.clientX, e.clientY, true);
+        }
+
+        function onPointerUp(e) {
+            if (!activeDragging) return;
+            
+            const hit = checkCollision(e.clientX, e.clientY, false);
+            
+            if (hit && hit.dataset.target === activeDragging.dataset.letter && !hit.classList.contains('filled')) {
+                // SUCCESS
+                hit.textContent = activeDragging.dataset.letter;
+                hit.classList.add('filled');
+                activeDragging.classList.add('used');
+                activeDragging.style.visibility = 'visible';
+                
+                createSparkle(hit);
+                checkWordWin(hit.dataset.groupId);
+            } else {
+                // FAIL
+                if (hit) {
+                    hit.classList.add('error');
+                    setTimeout(() => hit.classList.remove('error'), 400);
+                }
+                activeDragging.style.visibility = 'visible';
+            }
+            
+            if (dragProxy) {
+                dragProxy.remove();
+                dragProxy = null;
+            }
+            
+            window.removeEventListener('pointermove', onPointerMove);
+            window.removeEventListener('pointerup', onPointerUp);
+            activeDragging = null;
+        }
+
+        function checkCollision(x, y, highlightOnly) {
+            // Remove all active highlights
+            document.querySelectorAll('.blank.active').forEach(b => b.classList.remove('active'));
+            
+            const elements = document.elementsFromPoint(x, y);
+            const blank = elements.find(el => el.classList.contains('blank') && !el.classList.contains('filled'));
+            
+            if (blank && highlightOnly) {
+                blank.classList.add('active');
+            }
+            
+            return blank;
+        }
+
+        function checkWordWin(groupId) {
+            const card = document.getElementById(`card-${groupId}`);
+            const blanks = card.querySelectorAll('.blank');
+            const allFilled = Array.from(blanks).every(b => b.classList.contains('filled'));
+            
+            if (allFilled) {
+                card.classList.add('complete');
+                createConfetti();
+                completedCount++;
+                
+                if (completedCount === WORD_DATA.length) {
+                    showFinalWin();
+                }
+            }
+        }
+
+        function createSparkle(el) {
+            const rect = el.getBoundingClientRect();
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'confetti';
+                sparkle.textContent = '✨';
+                sparkle.style.left = (rect.left + rect.width / 2) + 'px';
+                sparkle.style.top = (rect.top + rect.height / 2) + 'px';
+                sparkle.style.fontSize = '20px';
+                document.body.appendChild(sparkle);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 50 + Math.random() * 50;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist;
+                
+                sparkle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 600,
+                    easing: 'ease-out'
+                }).onfinish = () => sparkle.remove();
+            }
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 40; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.textContent = ['🎉', '🎈', '⭐', '✨', '🌈'][Math.floor(Math.random() * 5)];
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = '-50px';
+                c.style.fontSize = (20 + Math.random() * 30) + 'px';
+                document.body.appendChild(c);
+                
+                const duration = 2000 + Math.random() * 3000;
+                c.animate([
+                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: duration,
+                    easing: 'linear'
+                }).onfinish = () => c.remove();
+            }
+        }
+
+        function showFinalWin() {
+            document.getElementById('winMessage').style.display = 'block';
+            setInterval(createConfetti, 1000);
+        }
+
+        function resetGame() {
+            location.reload();
+        }
+
+        init();
+    </script>
+</body>
+</html>
