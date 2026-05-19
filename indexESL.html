@@ -67,6 +67,7 @@ html, body {
   height: 8px; z-index: 49; background: rgba(0,0,0,.15);
 }
 .timer-bar { height: 100%; width: 100%; background: #4caf50; transition: background .3s; }
+#guess-timer-wrap { display: none; }
 
 /* ══ SHARED RESULT FLASH ══ */
 .result-flash {
@@ -1144,15 +1145,9 @@ function renderGuessQ(){
       <button class="btn btn-skip">Skip →</button>
     </div>
   </div>`;
-  gTimer.start(timerDurGuess(), ()=>{
-    gLives=Math.max(0,gLives-1);
-    gLivesEl.textContent=livesStr(gLives);
-    gRoot.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:3rem">⏱️</div><div style="font-size:1.9rem;font-weight:900;color:#e53935;margin:8px 0">Time's Up!</div><div style="font-size:1.3rem;color:#666">Lives left: ${livesStr(gLives)}</div></div>`;
-    setTimeout(()=>{gIdx++;renderGuessQ();},1200);
-  });
   document.getElementById('g-ebox').addEventListener('click',doReveal);
   document.getElementById('g-reveal').addEventListener('click',doReveal);
-  gRoot.querySelectorAll('.btn-skip')[0].addEventListener('click',()=>{gTimer.stop();gIdx++;renderGuessQ();});
+  gRoot.querySelectorAll('.btn-skip')[0].addEventListener('click',()=>{gIdx++;renderGuessQ();});
 }
 function doReveal(){
   gTimer.stop();
